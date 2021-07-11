@@ -1,12 +1,14 @@
 package com.kwonyj.github_search_repository.data.remote.model
 
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class GithubRepoModel(
     val id: String,
     @Json(name = "full_name")
     val fullName: String,
-    val description: String,
+    val description: String?,
     val owner: GithubRepoOwnerModel,
     @Json(name = "html_url")
     val url: String,
