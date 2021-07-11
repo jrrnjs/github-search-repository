@@ -9,5 +9,5 @@
     </plurals>
 
     <string name="main_stars">%s stars</string>
-    <string name="main_forks">%s for</string>
+    <string name="main_forks">%s forks</string>
 </resources>

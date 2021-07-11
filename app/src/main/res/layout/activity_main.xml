@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.MainActivity">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.kwonyj.github_search_repository.ui.MainViewModel" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -52,6 +60,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
+                    android:text="@{@plurals/main_repository_result(viewModel.totalCount == null ? 0 : viewModel.totalCount, viewModel.totalCount == null ? 0 : viewModel.totalCount)}"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     tools:text="28,144 repository results" />
@@ -68,6 +77,7 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    bind:submitList="@{viewModel.githubRepoList}"
                     tools:listitem="@layout/viewholder_repository" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -76,7 +86,8 @@
                 android:id="@+id/pb_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                bind:visible="@{viewModel.isLoading}" />
 
         </com.google.android.material.card.MaterialCardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
