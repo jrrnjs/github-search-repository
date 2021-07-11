@@ -5,6 +5,8 @@ plugins {
     id 'kotlin-parcelize'
 }
 
+apply from: "$rootDir/dependencies.gradle"
+
 android {
     compileSdkVersion 30
 
