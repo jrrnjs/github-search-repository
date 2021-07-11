@@ -5,6 +5,6 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class GithubRepoResult(
-    val count: Int,
+    val totalCount: Int,
     val items: List<GithubRepo>
 ) : Parcelable
