@@ -29,7 +29,9 @@ class MainViewModel @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { _isLoading.value = true }
             .doOnEvent { t1, t2 -> _isLoading.value = false }
-            .subscribe(_githubRepoResult::setValue, _error::setValue)
-            .addTo(compositeDisposable)
+            .subscribe(_githubRepoResult::setValue) {
+                _githubRepoResult.value = GithubRepoResult.EMPTY
+                _error.value = it
+            }.addTo(compositeDisposable)
     }
 }
