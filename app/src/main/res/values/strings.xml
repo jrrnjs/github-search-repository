@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">github-search-repository</string>
+    <string name="main_search_repository">Search repository</string>
+
+    <plurals name="main_repository_result">
+        <item quantity="zero">We couldn’t find any repositories</item>
+        <item quantity="one">%,d repository result</item>
+        <item quantity="other">%,d repository results</item>
+    </plurals>
+
+    <string name="main_stars">%s stars</string>
+    <string name="main_forks">%s forks</string>
+
+    <string name="error_socket_time_exception">네트워크 요청 시간이 초과하였습니다.</string>
+    <string name="error_unprocessable_entity">네트워크 요청이 잘못 되었습니다.</string>
 </resources>
