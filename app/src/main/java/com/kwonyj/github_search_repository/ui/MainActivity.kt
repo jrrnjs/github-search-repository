@@ -33,7 +33,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }
 
         binding.etSearch.textChangedObservable()
-            .debounce(500, TimeUnit.MILLISECONDS)
+            .debounce(1000, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { keyword ->
                 (binding.rvRepositories.adapter as GithubRepoAdapter).setSearchKeyword(keyword)
