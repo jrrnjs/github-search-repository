@@ -1,13 +1,13 @@
 package com.kwonyj.github_search_repository.ui
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
 import com.kwonyj.github_search_repository.R
 import com.kwonyj.github_search_repository.databinding.ActivityMainBinding
 import com.kwonyj.github_search_repository.ext.initBinding
 import com.kwonyj.github_search_repository.ext.toast
 import com.kwonyj.github_search_repository.util.textChangedObservable
+import com.kwonyj.github_search_repository.view.OnLoadMoreListener
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -23,6 +23,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         CompositeDisposable()
     }
     private val viewModel by viewModels<MainViewModel>()
+    private lateinit var loadMoreListener: OnLoadMoreListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +41,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                     toast(R.string.error_socket_time_exception)
                 }
             }
-
         }
 
         binding.initBinding {
@@ -50,6 +50,18 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
         binding.rvRepositories.run {
             adapter = GithubRepoAdapter()
+            loadMoreListener = OnLoadMoreListener(
+                onLoadMore = { page ->
+                    viewModel.searchRepository(
+                        binding.etSearch.text.toString(),
+                        page
+                    )
+                }, isLoading = {
+                    viewModel.isLoading.value ?: false
+                }, isFinished = {
+                    viewModel.isFinished
+                }
+            ).also { it.addTo(this) }
         }
 
         binding.etSearch.textChangedObservable()
@@ -57,7 +69,8 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { keyword ->
                 (binding.rvRepositories.adapter as GithubRepoAdapter).setSearchKeyword(keyword)
-                viewModel.searchRepository(keyword, 1)
+                loadMoreListener.reset()
+                viewModel.searchRepository(keyword)
             }.addTo(compositeDisposable)
     }
 
